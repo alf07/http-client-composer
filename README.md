@@ -531,5 +531,19 @@ TransportInterface
 * поддержка PSR;
 * улучшенная работа с HTTP headers.
 
-## License
-MIT
+---
+
+## Лицензия
+
+Пакет распространяется под лицензией MIT.
+
+---
+
+## Автор
+
+**Литвиненко Роман Александрович**
+
+* GitHub: [alf07](https://github.com/alf07/)
+* Email: [roma.alf89@gmail.com](mailto:roma.alf89@gmail.com)
+* Telegram: @Alf88
+* Канал в Макс https://max.ru/channel_alf_dev
