@@ -1,3 +1,6 @@
+<img width="1536" height="1024" alt="http_client" src="https://github.com/user-attachments/assets/f1b0e5f7-19b0-4bcc-8ddc-3381be48edda" />
+
+
 # HTTP Client
 
 Легковесный HTTP-клиент для PHP без зависимости фреймворков.
