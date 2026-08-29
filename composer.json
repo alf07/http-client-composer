@@ -1,0 +1,24 @@
+{
+    "name": "alf89/http-client",
+    "description": "Легковесный HTTP-клиент для PHP",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Литвиненко Роман Александрович",
+            "email": "roma.alf89@gmail.com",
+            "homepage": "https://github.com/alf07/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.5",
+      "ext-curl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "alf89\\HttpClient\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
