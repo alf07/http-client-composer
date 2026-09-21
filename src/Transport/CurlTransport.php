@@ -5,6 +5,7 @@ namespace alf89\HttpClient\Transport;
 use alf89\HttpClient\Contracts\TransportInterface;
 use alf89\HttpClient\Exceptions\ConnectionException;
 use alf89\HttpClient\Http\Response;
+use alf89\HttpClient\Config\Config;
 
 /**\
  * @todo TIMEOUT  передавать или если не передано устанавливать по умолчанию
@@ -12,8 +13,11 @@ use alf89\HttpClient\Http\Response;
  * @todo USERAGENT в переменную
  * @todo почитать какие параметры можно еще добавить
  */
-class CurlTransport implements TransportInterface
+readonly class CurlTransport implements TransportInterface
 {
+    public function __construct(
+        private Config $config,
+    ){}
     public function send(string $method, string $url, array $headers = [], array $body = [], array $query = []): Response
     {
         if($query !== []){
@@ -26,10 +30,10 @@ class CurlTransport implements TransportInterface
             CURLOPT_HTTPHEADER => $headers,
             CURLOPT_HEADER => true,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_CONNECTTIMEOUT => 5,
-            CURLOPT_USERAGENT => 'alf89/http-client/1.0',
-            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_TIMEOUT => $this->config->getTimeout(),
+            CURLOPT_CONNECTTIMEOUT => $this->config->getConnectTimeout(),
+            CURLOPT_USERAGENT => $this->config->getUserAgent(),
+            CURLOPT_SSL_VERIFYPEER => $this->config->getVerifyPeer(),
         ];
 
         if($body !== []){
