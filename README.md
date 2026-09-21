@@ -23,6 +23,10 @@
 * Обработка ошибок cURL
 * `Facade` для удобного использования
 * Разделение HTTP-клиента и transport-слоя через интерфейсы
+* PSR-4 autoloading
+* Управление проверкой SSL-сертификата
+* Настройка таймаута подключения
+* Настройка таймаута запроса
 
 ## Требования
 
@@ -35,6 +39,28 @@
 
 ```bash
 composer require alf89/http-client
+```
+
+## Конфигурация
+
+Настройки HTTP-клиента находятся в:
+
+`src/Config/Config.php`
+
+На данный момент конфигурация задаётся непосредственно в классе Config.
+
+Текущие значения по умолчанию:
+
+```php
+    readonly class Config
+    {
+        public function __construct(
+        private int $timeout = 30,
+        private int $connectTimeout = 5,
+        private string $userAgent = 'alf89/http-client/1.0',
+        private bool $verifyPeer = true,
+        ) {}
+    }
 ```
 
 ## Использование
@@ -520,20 +546,21 @@ TransportInterface
 
 Развитие проекта:
 
-* конфигурация timeout;
-* конфигурация connect timeout;
-* конфигурация User-Agent;
+* возможность задавать настройки пользователем;
+* вынести конфигурацию из класса Config в JSON-файл;
 * улучшение обработки JSON;
 * расширенная обработка HTTP-ошибок;
+* расширенная работа с HTTP headers;
+* корректное формирование URL и query parameters;
+* redirect;
 * retry;
+* PHPUnit-тесты;
+* PHPStan;
 * middleware;
 * logging;
 * дополнительные transport;
-* PHPUnit-тесты;
-* PHPStan;
-* поддержка PSR;
-* улучшенная работа с HTTP headers.
-
+* поддержка PSR.
+* поддержка различных форматов тела запроса;
 ---
 
 ## Лицензия
