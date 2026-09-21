@@ -2,17 +2,19 @@
 
 namespace alf89\HttpClient\Facades;
 
+use alf89\HttpClient\Config\Config;
 use alf89\HttpClient\Services\HttpClientService;
 use alf89\HttpClient\Transport\CurlTransport;
 
 final class Http
 {
+
     private static ?HttpClientService $service = null;
 
     private  static function service(): HttpClientService
     {
         return self::$service ??= new HttpClientService(
-            new CurlTransport()
+            new CurlTransport(new Config())
         );
     }
 
