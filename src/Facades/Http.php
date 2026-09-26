@@ -10,11 +10,12 @@ final class Http
 {
 
     private static ?HttpClientService $service = null;
+    private static ?Config $config = null;
 
     private  static function service(): HttpClientService
     {
         return self::$service ??= new HttpClientService(
-            new CurlTransport(new Config())
+            new CurlTransport(self::config())
         );
     }
 
@@ -81,5 +82,10 @@ final class Http
             $headers,
             $body
         );
+    }
+
+    public static function config(): Config
+    {
+        return  self::$config ??= new Config();
     }
 }

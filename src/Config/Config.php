@@ -2,28 +2,37 @@
 
 namespace alf89\HttpClient\Config;
 
-readonly class Config
+class Config
 {
 
     public function __construct(
-        private int    $timeout = 30,
-        private int    $connectTimeout = 5,
-        private string $userAgent = 'alf89/http-client/1.0',
-        private bool   $verifyPeer = true,
+        public int     $timeout = 30 {
+            get {
+                return $this->timeout;
+            }
+            set {
+                if($value <= 0){
+                    throw new \InvalidArgumentException('The value must be a positive integer');
+                }
+                $this->timeout = $value;
+            }
+        },
+        public int     $connectTimeout = 5 {
+            get {
+                return $this->connectTimeout;
+            }
+            set {
+                if($value <= 0){
+                    throw new \InvalidArgumentException('The value must be a positive integer');
+                }
+                $this->connectTimeout = $value;
+            }
+        },
+        public private(set) string $userAgent = 'alf89/http-client/0.2.1'{
+            get {
+                return $this->userAgent;
+            }
+        },
+        public bool $verifyPeer = true,
     ){}
-
-
-    public function getTimeout(): int
-    {
-       return $this->timeout;
-    }
-    public function getConnectTimeout(): int{
-        return $this->connectTimeout;
-    }
-    public function getUserAgent(): string{
-        return $this->userAgent;
-    }
-    public function getVerifyPeer(): bool{
-        return $this->verifyPeer;
-    }
 }

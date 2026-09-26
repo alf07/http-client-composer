@@ -1,6 +1,5 @@
 <img width="1536" height="1024" alt="http_client" src="https://github.com/user-attachments/assets/f1b0e5f7-19b0-4bcc-8ddc-3381be48edda" />
 
-
 # HTTP Client
 
 Легковесный HTTP-клиент для PHP без зависимости фреймворков.
@@ -27,6 +26,7 @@
 * Управление проверкой SSL-сертификата
 * Настройка таймаута подключения
 * Настройка таймаута запроса
+* Конфигурация HTTP-клиента через Config
 
 ## Требования
 
@@ -43,25 +43,42 @@ composer require alf89/http-client
 
 ## Конфигурация
 
-Настройки HTTP-клиента находятся в:
-
-`src/Config/Config.php`
-
-На данный момент конфигурация задаётся непосредственно в классе Config.
-
-Текущие значения по умолчанию:
+Конфигурация HTTP-клиента создаётся автоматически и доступна через `Http::config()`.
 
 ```php
-    readonly class Config
-    {
-        public function __construct(
-        private int $timeout = 30,
-        private int $connectTimeout = 5,
-        private string $userAgent = 'alf89/http-client/1.0',
-        private bool $verifyPeer = true,
-        ) {}
-    }
+use alf89\HttpClient\Facades\Http;
+
+Http::config()->timeout = 60;
+Http::config()->connectTimeout = 10;
+Http::config()->verifyPeer = false;
 ```
+
+Доступные параметры:
+
+```php
+Http::config()->timeout;
+Http::config()->connectTimeout;
+Http::config()->userAgent;
+Http::config()->verifyPeer;
+```
+
+Значения по умолчанию:
+
+```text
+timeout        = 30
+connectTimeout = 5
+userAgent      = alf89/http-client/0.2.1
+verifyPeer     = true
+```
+
+`timeout` и `connectTimeout` должны быть положительными целыми числами.
+
+```php
+Http::config()->timeout = 0;
+// InvalidArgumentException
+```
+
+`userAgent` доступен для чтения, но не предназначен для изменения через конфигурацию.
 
 ## Использование
 
@@ -381,22 +398,38 @@ CurlTransport
 
 вручную.
 
+Конфигурация доступна через:
+
+```php
+Http::config()
+```
+
+Например:
+
+```php
+Http::config()->timeout = 60;
+
+$response = Http::get(
+    'https://httpbin.org/get'
+);
+```
+
 ## Архитектура
 
 Пакет разделён на несколько уровней:
 
 ```text
-Http Facade
-     ↓
-HttpClientService
-     ↓
-TransportInterface
-     ↓
-CurlTransport
-     ↓
-PHP cURL
-     ↓
-Response
+             Config
+                ↓
+Http Facade → HttpClientService
+                ↓
+        TransportInterface
+                ↓
+           CurlTransport
+                ↓
+             PHP cURL
+                ↓
+             Response
 ```
 
 ### Contracts
@@ -447,6 +480,7 @@ TransportInterface::send('GET', ...)
 * устанавливает HTTP headers;
 * устанавливает HTTP method;
 * сериализует body в JSON;
+* использует настройки `Config`;
 * выполняет cURL-запрос;
 * получает HTTP status code;
 * получает response headers;
@@ -484,6 +518,9 @@ HttpException
 
 ```text
 src/
+├── Config/
+│   └── Config.php
+│
 ├── Contracts/
 │   ├── HttpClientInterface.php
 │   ├── ResponseInterface.php
@@ -528,8 +565,6 @@ TransportInterface
 
 ## Текущие ограничения
 
-Версия `0.1.0` является первой версией проекта.
-
 В текущей версии:
 
 * используется PHP cURL;
@@ -546,8 +581,6 @@ TransportInterface
 
 Развитие проекта:
 
-* возможность задавать настройки пользователем;
-* вынести конфигурацию из класса Config в JSON-файл;
 * улучшение обработки JSON;
 * расширенная обработка HTTP-ошибок;
 * расширенная работа с HTTP headers;
@@ -559,8 +592,10 @@ TransportInterface
 * middleware;
 * logging;
 * дополнительные transport;
-* поддержка PSR.
-* поддержка различных форматов тела запроса;
+* поддержка PSR;
+* поддержка различных форматов тела запроса.
+* добавление новых настроек конфигурации
+
 ---
 
 ## Лицензия
@@ -576,4 +611,4 @@ TransportInterface
 * GitHub: [alf07](https://github.com/alf07/)
 * Email: [roma.alf89@gmail.com](mailto:roma.alf89@gmail.com)
 * Telegram: @Alf88
-* Канал в Макс https://max.ru/channel_alf_dev
+* Канал в MAX https://max.ru/channel_alf_dev

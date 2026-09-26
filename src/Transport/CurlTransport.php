@@ -7,10 +7,7 @@ use alf89\HttpClient\Exceptions\ConnectionException;
 use alf89\HttpClient\Http\Response;
 use alf89\HttpClient\Config\Config;
 
-/**\
- * @todo TIMEOUT  передавать или если не передано устанавливать по умолчанию
- * @todo CONNECTTIMEOUT  передавать или если не передано устанавливать по умолчанию
- * @todo USERAGENT в переменную
+/**
  * @todo почитать какие параметры можно еще добавить
  */
 readonly class CurlTransport implements TransportInterface
@@ -30,10 +27,10 @@ readonly class CurlTransport implements TransportInterface
             CURLOPT_HTTPHEADER => $headers,
             CURLOPT_HEADER => true,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => $this->config->getTimeout(),
-            CURLOPT_CONNECTTIMEOUT => $this->config->getConnectTimeout(),
-            CURLOPT_USERAGENT => $this->config->getUserAgent(),
-            CURLOPT_SSL_VERIFYPEER => $this->config->getVerifyPeer(),
+            CURLOPT_TIMEOUT => $this->config->timeout,
+            CURLOPT_CONNECTTIMEOUT => $this->config->connectTimeout,
+            CURLOPT_USERAGENT => $this->config->userAgent,
+            CURLOPT_SSL_VERIFYPEER => $this->config->verifyPeer,
         ];
 
         if($body !== []){
