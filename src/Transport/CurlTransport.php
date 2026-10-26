@@ -6,6 +6,7 @@ use alf89\HttpClient\Contracts\TransportInterface;
 use alf89\HttpClient\Exceptions\ConnectionException;
 use alf89\HttpClient\Http\Response;
 use alf89\HttpClient\Config\Config;
+use JsonException;
 
 /**
  * @todo почитать какие параметры можно еще добавить
@@ -15,6 +16,10 @@ readonly class CurlTransport implements TransportInterface
     public function __construct(
         private Config $config,
     ){}
+
+    /**
+     * @throws \JsonException
+     */
     public function send(string $method, string $url, array $headers = [], array $body = [], array $query = []): Response
     {
         if($query !== []){
@@ -34,10 +39,9 @@ readonly class CurlTransport implements TransportInterface
         ];
 
         if($body !== []){
-            /**
-             * @todo добавить обработку ошибки json_encode
-             */
-            $options[CURLOPT_POSTFIELDS] = json_encode($body);
+            $options[CURLOPT_POSTFIELDS] = json_encode(
+                $body,
+                JSON_THROW_ON_ERROR);
         }
 
         $curl = curl_init();
