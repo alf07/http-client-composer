@@ -596,7 +596,6 @@ composer phpstan
 - PHPUnit-тесты для HTTP-методов и конфигурации.
 - Тесты ошибок cURL и сериализации JSON.
 - Тесты формирования URL и query parameters.
-- Статический анализ с PHPStan.
 
 ### HTTP-функциональность
 
