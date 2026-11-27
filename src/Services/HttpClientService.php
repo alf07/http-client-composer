@@ -3,6 +3,7 @@
 namespace alf89\HttpClient\Services;
 
 use alf89\HttpClient\Contracts\HttpClientInterface;
+use alf89\HttpClient\Contracts\ResponseInterface;
 use alf89\HttpClient\Contracts\TransportInterface;
 
 readonly class HttpClientService implements HttpClientInterface
@@ -13,7 +14,11 @@ readonly class HttpClientService implements HttpClientInterface
     ) {}
 
     
-    public function get(string $url, array $headers = [], array $query = [])
+    public function get(
+        string $url,
+        array $headers = [],
+        array $query = []
+    ):ResponseInterface
     {
        return $this->transport->send(
             method:'GET',
@@ -23,7 +28,11 @@ readonly class HttpClientService implements HttpClientInterface
        );
     }
 
-    public function post(string $url, array $headers = [], array $body = [])
+    public function post(
+        string $url,
+        array $headers = [],
+        array $body = []
+    ):ResponseInterface
     {
         return $this->transport->send(
             method: 'POST',
@@ -33,7 +42,11 @@ readonly class HttpClientService implements HttpClientInterface
         );
     }
 
-    public function put(string $url, array $headers = [], array $body = [])
+    public function put(
+        string $url,
+        array $headers = [],
+        array $body = []
+    ):ResponseInterface
     {
         return $this->transport->send(
             method: 'PUT',
@@ -43,7 +56,11 @@ readonly class HttpClientService implements HttpClientInterface
         );
     }
 
-    public function delete(string $url, array $headers = [], array $query = [])
+    public function delete(
+        string $url,
+        array $headers = [],
+        array $query = []
+    ):ResponseInterface
     {
         return $this->transport->send(
             method: 'DELETE',
@@ -53,7 +70,11 @@ readonly class HttpClientService implements HttpClientInterface
         );
     }
 
-    public function patch(string $url, array $headers = [], array $body = [])
+    public function patch(
+        string $url,
+        array $headers = [],
+        array $body = []
+    ):ResponseInterface
     {
         return $this->transport->send(
             method:'PATCH',

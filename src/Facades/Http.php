@@ -3,6 +3,7 @@
 namespace alf89\HttpClient\Facades;
 
 use alf89\HttpClient\Config\Config;
+use alf89\HttpClient\Contracts\ResponseInterface;
 use alf89\HttpClient\Services\HttpClientService;
 use alf89\HttpClient\Transport\CurlTransport;
 
@@ -19,11 +20,15 @@ final class Http
         );
     }
 
+    /**
+     * @param list<string> $headers
+     * @param array<array-key, mixed> $query
+     */
     public static function get(
         string $url,
         array $headers = [],
         array $query = []
-    )
+    ):ResponseInterface
     {
         return self::service()->get(
             $url,
@@ -32,11 +37,15 @@ final class Http
         );
     }
 
+    /**
+     * @param list<string> $headers
+     * @param array<array-key, mixed> $body
+     */
     public static function post(
         string $url,
         array $headers = [],
         array $body = []
-    )
+    ): ResponseInterface
     {
         return self::service()->post(
             $url,
@@ -45,11 +54,15 @@ final class Http
         );
     }
 
+    /**
+     * @param list<string> $headers
+     * @param array<array-key, mixed> $body
+     */
     public static function put(
         string $url,
         array $headers = [],
         array $body = []
-    )
+    ): ResponseInterface
     {
         return self::service()->put(
             $url,
@@ -58,11 +71,15 @@ final class Http
         );
     }
 
+    /**
+     * @param list<string> $headers
+     * @param array<array-key, mixed> $query
+     */
     public static function delete(
         string $url,
         array $headers = [],
         array $query = []
-    )
+    ): ResponseInterface
     {
         return self::service()->delete(
             $url,
@@ -71,11 +88,15 @@ final class Http
         );
     }
 
+    /**
+     * @param list<string> $headers
+     * @param array<array-key, mixed> $body
+     */
     public static function patch(
         string $url,
         array $headers = [],
         array $body = []
-    )
+    ): ResponseInterface
     {
         return self::service()->patch(
             $url,

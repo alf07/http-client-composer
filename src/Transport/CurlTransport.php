@@ -26,6 +26,20 @@ readonly class CurlTransport implements TransportInterface
             $url .= '?'.http_build_query($query);
         }
 
+        if($url == ''){
+            throw new \InvalidArgumentException('Url cannot be empty');
+        }
+
+        if($method == ''){
+            throw new \InvalidArgumentException('Method must not be empty.');
+        }
+
+        $userAgent = $this->config->userAgent;
+
+        if($userAgent === ''){
+            throw new \InvalidArgumentException('User-agent cannot be empty.');
+        }
+
         $options = [
             CURLOPT_URL => $url,
             CURLOPT_CUSTOMREQUEST => $method,
@@ -34,7 +48,7 @@ readonly class CurlTransport implements TransportInterface
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_TIMEOUT => $this->config->timeout,
             CURLOPT_CONNECTTIMEOUT => $this->config->connectTimeout,
-            CURLOPT_USERAGENT => $this->config->userAgent,
+            CURLOPT_USERAGENT => $userAgent,
             CURLOPT_SSL_VERIFYPEER => $this->config->verifyPeer,
         ];
 
@@ -51,7 +65,7 @@ readonly class CurlTransport implements TransportInterface
         /**
          * @todo доработать ошибку (http код и тело)
          */
-        if($response === false){
+        if(!is_string($response)){
             throw new ConnectionException(
                 curl_error($curl),
                 curl_errno($curl)
@@ -73,7 +87,11 @@ readonly class CurlTransport implements TransportInterface
         );
 
     }
-    private function parseHeaders($responseHeaders): array
+
+    /**
+     * @return array<string, string>
+     */
+    private function parseHeaders(string $responseHeaders): array
     {
         preg_match_all(
             '/^([^:\r\n]+):\s*(.*)$/m',
@@ -81,6 +99,13 @@ readonly class CurlTransport implements TransportInterface
             $matches,
         );
 
+        /**
+         * @var array{
+         *     0: list<string>,
+         *     1: list<string>,
+         *     2: list<string>
+         * } $matches
+         */
         return array_combine(
             array_map('trim', $matches[1]),
             array_map('trim', $matches[2])
