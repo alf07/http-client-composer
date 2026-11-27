@@ -6,6 +6,9 @@ use alf89\HttpClient\Contracts\ResponseInterface;
 
 final readonly class Response implements ResponseInterface
 {
+    /**
+     * @param array<string, string> $headers
+     */
     public function __construct(
         private int    $statusCode,
         private array  $headers,
